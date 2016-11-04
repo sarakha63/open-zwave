@@ -194,7 +194,7 @@ bool Basic::HandleMsg
 		{
 			UpdateMappedClass( _instance, m_mapping, _data[1] );
 		}
-		else if( ValueByte* value = static_cast<ValueByte*>( GetValue( _instance, 0 ) ) )
+		if( ValueByte* value = static_cast<ValueByte*>( GetValue( _instance, 0 ) ) )
 		{
 			value->OnValueRefreshed( _data[1] );
 			value->Release();
@@ -211,10 +211,9 @@ bool Basic::HandleMsg
 			Log::Write( LogLevel_Info, GetNodeId(), "Received Basic set from node %d: level=%d. Treating it as a Basic report.", GetNodeId(), _data[1] );
 			if( !m_ignoreMapping && m_mapping != 0 )
 			{
-				Log::Write(LogLevel_Warning, GetNodeId(), "updated mapped class");
 				UpdateMappedClass( _instance, m_mapping, _data[1] );
 			}
-			else if( ValueByte* value = static_cast<ValueByte*>( GetValue( _instance, 0 ) ) )
+			if( ValueByte* value = static_cast<ValueByte*>( GetValue( _instance, 0 ) ) )
 			{
 				value->OnValueRefreshed( _data[1] );
 				value->Release();
