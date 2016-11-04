@@ -386,6 +386,7 @@ void Value::OnValueRefreshed
 {
 	if( IsWriteOnly() )
 	{
+		Log::Write(LogLevel_Warning, "Value::OnValueRefreshed write only value for node");
 		return;
 	}
 
@@ -416,6 +417,7 @@ void Value::OnValueChanged
 {
 	if( IsWriteOnly() )
 	{
+		Log::Write(LogLevel_Warning, "Value::OnValueChanged write only value for node");
 		return;
 	}
 
