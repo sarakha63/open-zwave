@@ -369,8 +369,8 @@ bool Value::Set
 				Log::Write(LogLevel_Info, m_id.GetNodeId(), "Value::Set - %s - %s - %d - %d - %s", cc->GetCommandClassName().c_str(), this->GetLabel().c_str(), m_id.GetIndex(), m_id.GetInstance(), this->GetAsString().c_str());
 				// flag value as set and queue a "Set Value" message for transmission to the device
 				res = cc->SetValue( *this );
-			}
-			if( res )
+
+				if( res )
 				{
 					if( !IsWriteOnly() )
 					{
@@ -397,6 +397,7 @@ bool Value::Set
 						}
 					}
 				}
+			}
 		}
 	}
 
