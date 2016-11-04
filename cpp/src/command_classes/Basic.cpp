@@ -214,11 +214,15 @@ bool Basic::HandleMsg
 			if( !m_ignoreMapping && m_mapping != 0 )
 			{
 				UpdateMappedClass( _instance, m_mapping, _data[1] );
+			} else {
+				Log::Write(LogLevel_Warning, GetNodeId(), "No Valid Mapping for Basic Command Class and No ValueID Exported. Error?");
 			}
 			if( ValueByte* value = static_cast<ValueByte*>( GetValue( _instance, 0 ) ) )
 			{
 				value->OnValueRefreshed( _data[1] );
 				value->Release();
+			} else {
+				Log::Write(LogLevel_Warning, GetNodeId(), "error in valuebyte");
 			}
 		}
 		else
