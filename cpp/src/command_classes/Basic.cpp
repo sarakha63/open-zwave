@@ -203,7 +203,6 @@ bool Basic::HandleMsg
 		} else {
 			Log::Write(LogLevel_Warning, GetNodeId(), "error in valuebyte");
 		}
-		}
 		return true;
 	}
 
