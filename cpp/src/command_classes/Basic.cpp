@@ -220,9 +220,44 @@ bool Basic::HandleMsg
 			if( ValueByte* value = static_cast<ValueByte*>( GetValue( _instance, 0 ) ) )
 			{
 				value->OnValueRefreshed( _data[1] );
+bool Basic::HandleMsg
+(
+	uint8 const* _data,
+	uint32 const _length,
+	uint32 const _instance	// = 1
+)
+{
+	if( BasicCmd_Report == (BasicCmd)_data[0] )
+	{
+		// Level
+		Log::Write( LogLevel_Info, GetNodeId(), "Received Basic report from node %d: level=%d", GetNodeId(), _data[1] );
+		if( !m_ignoreMapping && m_mapping != 0 )
+		{
+			UpdateMappedClass( _instance, m_mapping, _data[1] );
+		}
+		else if( ValueByte* value = static_cast<ValueByte*>( GetValue( _instance, 0 ) ) )
+		{
+			value->OnValueRefreshed( _data[1] );
+			value->Release();
+		} else {
+			Log::Write(LogLevel_Warning, GetNodeId(), "No Valid Mapping for Basic Command Class and No ValueID Exported. Error?");
+		}
+		return true;
+	}
+
+	if( BasicCmd_Set == (BasicCmd)_data[0] )
+	{
+		if( m_setAsReport )
+		{
+			Log::Write( LogLevel_Info, GetNodeId(), "Received Basic set from node %d: level=%d. Treating it as a Basic report.", GetNodeId(), _data[1] );
+			if( !m_ignoreMapping && m_mapping != 0 )
+			{
+				UpdateMappedClass( _instance, m_mapping, _data[1] );
+			}
+			else if( ValueByte* value = static_cast<ValueByte*>( GetValue( _instance, 0 ) ) )
+			{
+				value->OnValueRefreshed( _data[1] );
 				value->Release();
-			} else {
-				Log::Write(LogLevel_Warning, GetNodeId(), "error in valuebyte");
 			}
 		}
 		else
@@ -240,6 +275,7 @@ bool Basic::HandleMsg
 
 	return false;
 }
+
 
 //-----------------------------------------------------------------------------
 // <Basic::SetValue>
